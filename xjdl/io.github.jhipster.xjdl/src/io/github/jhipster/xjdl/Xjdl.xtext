@@ -1,0 +1,9 @@
+grammar io.github.jhipster.xjdl.Xjdl with org.eclipse.xtext.common.Terminals
+
+generate xjdl "http://www.github.io/jhipster/xjdl/Xjdl"
+
+Model:
+	greetings+=Greeting*;
+	
+Greeting:
+	'Hello' name=ID '!';
