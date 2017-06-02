@@ -4,7 +4,10 @@ import com.google.inject.Inject
 import java.io.File
 import java.nio.charset.Charset
 import java.nio.file.Path
+import org.eclipse.core.resources.IResource
+import org.eclipse.core.resources.ResourcesPlugin
 import org.eclipse.core.runtime.IStatus
+import org.eclipse.core.runtime.NullProgressMonitor
 import org.eclipse.core.runtime.Status
 import org.eclipse.core.variables.VariablesPlugin
 import org.eclipse.jface.preference.IPreferenceStore
@@ -48,6 +51,10 @@ class JDLNewProjectWizardExtension extends JDLNewProjectWizardEnhanced {
 	def done() {
 		new ITerminalService.Done() {
 			override void done(IStatus it) {
+				if (mainPage !== null && !mainPage.projectName.isNullOrEmpty) {
+					val project = ResourcesPlugin.workspace.root.getProject(mainPage.projectName)
+					if (project !== null) project.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor)
+				}
 				if (!isOK) {
 					new Status(
 						severity, IO_GITHUB_JHIPSTER_JDL_JDL, code, message, exception
